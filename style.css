@@ -1,0 +1,9 @@
+
+canvas {
+    border:1px solid #d0d0d0;
+    background-color: #808080;
+}
+
+.container {
+    max-width: 4096px;
+}
