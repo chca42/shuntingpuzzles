@@ -13,7 +13,7 @@ const tileSize = tileGrid + 2*tileBorder;
 const turnoutCurves = ["b","c","B","C"];
 const trackCurves = ["r","l","R","L"];
 const radius = 1.5*tileGrid;
-const L = Math.PI*radius/2*45/180;
+const L = Math.PI*radius*45/180;
 
 function replaceAt(s,i,c)
 {
@@ -140,9 +140,9 @@ var map = {
         var r = radius;
         var al = (rot ? rel : (1-rel))*Math.PI/4;
         var cy = r*Math.sin(al) * Math.sqrt(2)/1.5;
-        //var cx = cy*Math.tan(al) + tileGrid/2;
         var cx = r*(1 - Math.cos(al))*(1.5/Math.sqrt(2))**2 + tileGrid/2;
-        maplog.log(`al=${al}, cx=${cx}, cy=${cy}`);
+        var angle = 0;
+        //maplog.log(`al=${al}, cx=${cx}, cy=${cy}`);
 
         var lx = 0; // tile-local x
         var ly = 0; // tile-local y
@@ -155,12 +155,29 @@ var map = {
             case 'r':
             case 'b':
                 lx = cx; ly = cy;
-                if(!rot) ly = tileGrid - ly;
+                if(!rot)
+                {
+                    ly = tileGrid - ly;
+                    angle = (1-rel)*45/180*Math.PI;
+                }
+                else
+                {
+                    angle = rel*45/180*Math.PI;
+                }
                 break;
             case 'l':
             case 'c':
                 lx = tileGrid-cx; ly = cy;
-                if(!rot) ly = tileGrid - ly;
+                if(!rot)
+                {
+                    ly = tileGrid - ly;
+                    angle = -(1-rel)*45/180*Math.PI;
+                }
+                else
+                {
+                    angle = -rel*45/180*Math.PI;
+                }
+                
                 break;
         }
         if(rot)
@@ -168,15 +185,15 @@ var map = {
             lx = tileGrid - lx;
         }
 
-        return [x*tileGrid + lx, y*tileGrid + ly];
+        return [[x*tileGrid + lx, y*tileGrid + ly],angle];
     },
     getMove: function(at, rel, dist)
     {
         var [x,y] = at;
         var track = this.getTileA(1,x,y);
         var turnout = this.getTileA(2,x,y);
-        if(turnoutCurves.includes( track ) ||
-            trackCurves.includes( turnout ) )
+        if(turnoutCurves.includes( turnout ) ||
+            trackCurves.includes( track ) )
         {
             var rnew = rel+(dist/tileGrid/(L/tileGrid));
         }
@@ -236,50 +253,86 @@ var map = {
 
 var carlog = new Log(1000);
 class Car {
-    constructor(tileId)
+    constructor(tileId, initX, initY)
     {
         this.tileId = tileId;
-        this.tileAt = [1,0];
+        this.tileAt = [initX,initY];
         this.tileRel = 0.5;
+        this.pos = [0,0];
+        this.angle = 0;
         this.speed = 0;
+        this.attached = [];
     }
     draw()
     {
         ctx.save();
-        var pos = map.getPos(this.tileAt, this.tileRel);
-        ctx.translate(pos[0], pos[1]);
-        ctx.drawImage(cartiles, this.tileId%tileN, 
+        [this.pos, this.angle] = map.getPos(this.tileAt, this.tileRel);
+        ctx.translate(this.pos[0], this.pos[1]);
+        ctx.rotate(this.angle);
+        ctx.drawImage(cartiles, this.tileId%tileN*tileGrid, 
             Math.floor(this.tileId/tileN)*tileGrid,
             tileGrid, tileGrid,
              -tileGrid/2, -tileGrid/2,
              tileGrid, tileGrid);
         ctx.restore();
+        for(var o of this.attached)
+            o.draw();
     }
     move(dt)
     {
         var dist = this.speed*dt/1000;
         [this.tileAt, this.tileRel] = map.getMove(this.tileAt, this.tileRel, dist);
-
-        carlog.log([this.tileAt[0], this.tileAt[1], this.tileRel]);
+        for(var o of this.attached)
+            o.move(dt);
+        //carlog.log([this.tileAt[0], this.tileAt[1], this.tileRel]);
+    }
+    syncAttached()
+    {
+        // sync speed of attached cars
+        for(var o of this.attached)
+            o.speed = this.speed;
+        // sort attached cars
+        this.attached.sort((a,b) => a.pos[1] - b.pos[1]);
     }
 }
 
+function vdiff(v1,v2) { return [v1[0]-v2[0], v1[1]-v2[1]]; }
+function vlen(v) { return Math.sqrt(v[0]**2 + v[1]**2); }
+
 var cars = {
     colors: ["#008080", "#d95600", "#89a02c", "#ab37c8", "#2c5aa0"],
-    obj: [new Car(1)],
+    wagons: [new Car(1,1,2),new Car(2,1,7)],
+    engine: new Car(0,1,0),
     lastTime: Date.now(),
     draw: function(ms)
     {
+        // sync attached object speeds
+        this.engine.syncAttached();
+
         dt = ms - this.lastTime;
         if(dt < 200)
         {
-            for(var o of this.obj)
-            {
-                o.move(dt);
+            this.engine.move(dt);
+            this.engine.draw();
+            for(var o of this.wagons)
                 o.draw();
-            }
         }
         this.lastTime = ms;
+
+        // collision detection
+        var obj = [this.engine].concat(this.engine.attached);
+        for(var trainCar of obj)
+        {
+            for(var otherCar of this.wagons)
+            {
+                if( (vlen(vdiff(trainCar.pos, otherCar.pos))
+                    < tileGrid) )
+                {
+                    this.engine.attached.push(otherCar);
+                    this.wagons.splice(this.wagons.indexOf(otherCar),1);
+                }
+            }
+        }
     }
 };
 
@@ -288,12 +341,12 @@ function speed(inc, fwd)
     if(inc)
     {
         if(fwd)
-            cars.obj[0].speed = 50;
+            cars.engine.speed = 50;
         else
-            cars.obj[0].speed = -50;
+            cars.engine.speed = -50;
     }
     else
-    cars.obj[0].speed = 0;
+        cars.engine.speed = 0;
 }
 
 function animate()
