@@ -306,33 +306,32 @@ var cars = {
     lastTime: Date.now(),
     draw: function(ms)
     {
-        // sync attached object speeds
-        this.engine.syncAttached();
-
         dt = ms - this.lastTime;
         if(dt < 200)
         {
+            this.engine.syncAttached();
             this.engine.move(dt);
             this.engine.draw();
             for(var o of this.wagons)
                 o.draw();
-        }
-        this.lastTime = ms;
 
-        // collision detection
-        var obj = [this.engine].concat(this.engine.attached);
-        for(var trainCar of obj)
-        {
-            for(var otherCar of this.wagons)
+            // collision detection
+            var obj = [this.engine].concat(this.engine.attached);
+            for(var trainCar of obj)
             {
-                if( (vlen(vdiff(trainCar.pos, otherCar.pos))
-                    < tileGrid) )
+                for(var otherCar of this.wagons)
                 {
-                    this.engine.attached.push(otherCar);
-                    this.wagons.splice(this.wagons.indexOf(otherCar),1);
+                    if( (vlen(vdiff(trainCar.pos, otherCar.pos))
+                        < tileGrid) )
+                    {
+                        this.engine.attached.push(otherCar);
+                        this.wagons.splice(this.wagons.indexOf(otherCar),1);
+                    }
                 }
             }
         }
+        this.lastTime = ms;
+
     }
 };
 
