@@ -266,6 +266,17 @@ class Car {
     draw()
     {
         ctx.save();
+        // draw couplers between cars
+        ctx.strokeStyle = "rgb(100,100,100)";
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(this.pos[0], this.pos[1])
+        for(var o of this.attached)
+        {
+            ctx.lineTo(o.pos[0], o.pos[1]);
+        }
+        ctx.stroke();
+        // draw car
         [this.pos, this.angle] = map.getPos(this.tileAt, this.tileRel);
         ctx.translate(this.pos[0], this.pos[1]);
         ctx.rotate(this.angle);
@@ -275,6 +286,7 @@ class Car {
              -tileGrid/2, -tileGrid/2,
              tileGrid, tileGrid);
         ctx.restore();
+        // draw attached cars
         for(var o of this.attached)
             o.draw();
     }
