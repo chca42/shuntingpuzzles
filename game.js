@@ -41,64 +41,44 @@ class Log {
 
 var maplog = new Log(1000);
 
-var map = {
-    layers: 3,
-    cols: 6,
-    rows: 10,
-    tileMap: {g:10,t:11,s:1,r:3,l:4,v:2,w:0,c:9,m:8,b:7,n:6,c:5},
-    tiles: [
-        "gtgtgg"+
-        "gtgtgg"+
-        "gtgggg"+
-        "gggggg"+
-        "ggttgg"+
-        "gggtgg"+
-        "gggggg"+
-        "gtgggg"+
-        "gtgttg"+
-        "gtgttg"+
-        "gggggg",
-
-        " s s  "+
-        " s s  "+
-        " s V  "+
-        " srs  "+
-        " Wss  "+
-        " sws  "+
-        " sLW  "+
-        " s wl "+
-        " s ss "+
-        " s ss "+
-        "      ",
-
-        "      "+
-        "      "+
-        "   M  "+
-        "      "+
-        " N    "+
-        "  n   "+
-        "   N  "+
-        "   n  "+
-        "      "+
-        "      "+
-        "      ",
-    ],
-    getTile: function(layer,x,y)
+class Map {
+    constructor()
+    {
+        this.layers = 0;
+        this.cols = 0;
+        this.rows = 0;
+        this.tileMap = {g:10,t:11,s:1,r:3,l:4,v:2,w:0,c:9,m:8,b:7,n:6,c:5};
+        this.tiles = [];
+    }
+    setTileMap(data)
+    {
+        for(var level of data["level"])
+        {
+            var str = "";
+            for(var s of level)
+                str += s;
+            this.tiles.push(str);
+        }
+        this.layers = data["layers"];
+        this.cols = data["cols"];
+        this.rows = data["rows"];
+    }
+    getTile(layer,x,y)
     {
         var t = this.tiles[layer][x + this.cols*y];
         var rot = (t != t.toLowerCase());
         return [this.tileMap[t.toLowerCase()], rot];
-    },
-    getTileA: function(layer,x,y)
+    }
+    getTileA(layer,x,y)
     {
         return this.tiles[layer][x + this.cols*y];
-    },
-    setTileA: function(layer,x,y,v)
+    }
+    setTileA(layer,x,y,v)
     {
         this.tiles[layer] = replaceAt(
             this.tiles[layer], x + this.cols*y, v);
-    },
-    drawTile: function(id, rot, x, y)
+    }
+    drawTile(id, rot, x, y)
     {
         ctx.save();
         ctx.translate(
@@ -114,8 +94,8 @@ var map = {
           tileSize, tileSize
         );
         ctx.restore();
-    },
-    draw: function()
+    }
+    draw()
     {
         for(var l=0; l < this.layers; l++)
         {
@@ -128,8 +108,8 @@ var map = {
                 }
             }
         }
-    },
-    getPos: function(at, rel)
+    }
+    getPos(at, rel)
     {
         var [x,y] = at;
         var track = this.getTileA(1,x,y);
@@ -187,8 +167,8 @@ var map = {
         }
 
         return [[x*tileGrid + lx, y*tileGrid + ly],angle];
-    },
-    getMove: function(at, rel, dist)
+    }
+    getMove(at, rel, dist)
     {
         var [x,y] = at;
         var track = this.getTileA(1,x,y);
@@ -229,12 +209,12 @@ var map = {
             rnew -= fac*1;
         }
         return [atnew, rnew];
-    },
-    getTileFromPixel: function(x,y)
+    }
+    getTileFromPixel(x,y)
     {
         return [Math.floor(x/tileGrid), Math.floor(y/tileGrid)];
-    },
-    click: function(x,y)
+    }
+    click(x,y)
     {
         var [tx,ty] = this.getTileFromPixel(x,y);
         var t = this.getTileA(2,tx,ty);
@@ -251,6 +231,7 @@ var map = {
         }
     }
 };
+var map = new Map();
 
 var carlog = new Log(1000);
 class Car {
@@ -336,11 +317,15 @@ function vdiff(v1,v2) { return [v1[0]-v2[0], v1[1]-v2[1]]; }
 function vlen(v) { return Math.sqrt(v[0]**2 + v[1]**2); }
 function vdist(v1,v2) { return vlen(vdiff(v1,v2)); }
 
-var cars = {
-    colors: ["#008080", "#d95600", "#89a02c", "#ab37c8", "#2c5aa0"],
-    wagons: [new Car(1,1,2),new Car(2,1,7)],
-    engine: new Car(0,1,0),
-    draw: function(dt)
+class CarManager
+{
+    constructor()
+    {
+        this.colors = ["#008080", "#d95600", "#89a02c", "#ab37c8", "#2c5aa0"];
+        this.wagons = [new Car(1,1,2),new Car(2,1,7)];
+        this.engine = new Car(0,1,0);
+    }
+    draw(dt)
     {
         if(dt < 200)
         {
@@ -365,8 +350,8 @@ var cars = {
                 }
             }
         }
-    },
-    click: function(x,y)
+    }
+    click(x,y)
     {
         for(var w of this.engine.attached)
         {
@@ -380,22 +365,26 @@ var cars = {
         }
     }
 };
+var cars = new CarManager();
 
-var cab = {
-    fwd: true,
-    throttle: "none",
-    accel: 20,
-    speed: 0,
-    maxSpeed: 50,
-    throttleUp: function() { this.throttle = "up"; },
-    throttleDn: function() { this.throttle = "down"; },
-    throttleIdle: function() { this.throttle = "none"; },
-    reverse: function()
+class Cab {
+    constructor()
+    {
+        this.fwd = true;
+        this.throttle = "none";
+        this.accel = 20;
+        this.speed = 0;
+        this.maxSpeed = 50;
+    }
+    throttleUp() { this.throttle = "up"; }
+    throttleDn() { this.throttle = "down"; }
+    throttleIdle() { this.throttle = "none"; }
+    reverse()
     {
         if(this.speed < eps)
             this.fwd = !this.fwd;
-    },
-    animate: function(dt)
+    }
+    animate(dt)
     {
         switch(this.throttle)
         {
@@ -412,21 +401,9 @@ var cab = {
                 break;
         }
         cars.engine.speed = this.fwd ? this.speed : -this.speed;
-    },
-};
-
-function speed(inc, fwd)
-{
-    if(inc)
-    {
-        if(fwd)
-            cars.engine.speed = 50;
-        else
-            cars.engine.speed = -50;
     }
-    else
-        cars.engine.speed = 0;
-}
+};
+var cab = new Cab();
 
 var lastTime = Date.now();
 function animate()
@@ -449,7 +426,7 @@ var loaded = 0;
 function onload2()
 {
     loaded++;
-    if(loaded == 2)
+    if(loaded == 3)
         window.requestAnimationFrame(animate);
 }
 
@@ -458,14 +435,23 @@ function onload()
     canvas = document.getElementById('game');
     ctx = canvas.getContext("2d");
 
+    // load #1
     tiles = new Image();
     tiles.onload = onload2;
     tiles.src = "tiles/railways.png";
-
+    // load #2
     cartiles = new Image();
     cartiles.onload = onload2;
     cartiles.src = "tiles/cars.png";
+    // load #3
+    fetch("level.json").then(response => response.json())
+        .then(function(data)
+    {
+        map.setTileMap(data);
+        onload2();
+    });
 
+    // Keyboard and Mouse I/O
     canvas.addEventListener("mousedown", function(e)
     {
         const rect = canvas.getBoundingClientRect();

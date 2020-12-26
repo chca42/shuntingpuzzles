@@ -1,0 +1,43 @@
+{
+    "layers": 3,
+    "cols": 6,
+    "rows": 10,
+    "level": [
+        [
+        "gtgtgg",
+        "gtgtgg",
+        "gtgggg",
+        "gggggg",
+        "ggttgg",
+        "gggtgg",
+        "gggggg",
+        "gtgggg",
+        "gtgttg",
+        "gtgttg",
+        "gggggg"],
+        [
+        " s s  ",
+        " s s  ",
+        " s V  ",
+        " srs  ",
+        " Wss  ",
+        " sws  ",
+        " sLW  ",
+        " s wl ",
+        " s ss ",
+        " s ss ",
+        "      "],
+        [
+        "      ",
+        "      ",
+        "   M  ",
+        "      ",
+        " N    ",
+        "  n   ",
+        "   N  ",
+        "   n  ",
+        "      ",
+        "      ",
+        "      "]
+    ]
+}
