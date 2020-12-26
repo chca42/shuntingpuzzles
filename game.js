@@ -217,18 +217,22 @@ class TileMap {
     click(x,y)
     {
         var [tx,ty] = this.getTileFromPixel(x,y);
+
         var t = this.getTileA(2,tx,ty);
+        var sw = false;
         switch(t)
         {
-            case 'm': this.setTileA(2,tx,ty,'b'); break;
-            case 'n': this.setTileA(2,tx,ty,'c'); break;
-            case 'M': this.setTileA(2,tx,ty,'B'); break;
-            case 'N': this.setTileA(2,tx,ty,'C'); break;
-            case 'b': this.setTileA(2,tx,ty,'m'); break;
-            case 'c': this.setTileA(2,tx,ty,'n'); break;
-            case 'B': this.setTileA(2,tx,ty,'M'); break;
-            case 'C': this.setTileA(2,tx,ty,'N'); break;
+            case 'm': this.setTileA(2,tx,ty,'b'); sw=true; break;
+            case 'n': this.setTileA(2,tx,ty,'c'); sw=true; break;
+            case 'M': this.setTileA(2,tx,ty,'B'); sw=true; break;
+            case 'N': this.setTileA(2,tx,ty,'C'); sw=true; break;
+            case 'b': this.setTileA(2,tx,ty,'m'); sw=true; break;
+            case 'c': this.setTileA(2,tx,ty,'n'); sw=true; break;
+            case 'B': this.setTileA(2,tx,ty,'M'); sw=true; break;
+            case 'C': this.setTileA(2,tx,ty,'N'); sw=true; break;
         }
+        if(sw)
+            logic.checkCarOnTurnout(tx,ty);
     }
 };
 var map = new TileMap();
@@ -441,15 +445,29 @@ class GameLogic
         var err = false;
         for(var c of cars.wagons)
         {
+            // check for victory condition
             var dest = this.goal.get(c.tileId);
             if((c.tileAt[0] != dest[0]) ||
                 (c.tileAt[1] != dest[1]))
                 err = true;
+
+            // check for cars placed on invalid tiles
             var [t,rot] = map.getTileA(0,c.tileAt[0],c.tileAt[1]);
             if(t != "t")
             {
-                err = true;
                 alert("car placed on invalid tile! game over, try again.");
+                location.reload();
+            }
+        }
+    }
+    checkCarOnTurnout(tx,ty)
+    {
+        var obj = [cars.engine].concat(cars.wagons);
+        for(var o of obj)
+        {
+            if((o.tileAt[0] == tx) && (o.tileAt[1] == ty))
+            {
+                alert("you may not throw this turnout! game over, try again.");
                 location.reload();
             }
         }
