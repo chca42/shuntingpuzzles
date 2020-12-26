@@ -385,6 +385,7 @@ class CarManager
                 {
                     for(var o of uncoupled)
                         this.wagons.push(o);
+                    logic.countMove();
                 }
             }
         }
@@ -436,14 +437,38 @@ class GameLogic
     {
         this.goal = new Map();
         this.carcolors = [];
-        this.timer = 0;
+
+        this.time = 0;
+        this.startTime = 0;
         this.running = true;
+        this.moves = 0;
     }
     load(data)
     {
         for(var g of data.goal)
             this.goal.set(g.id, [g.x,g.y]);
         this.carcolors = data.carcolors;
+    }
+    timer()
+    {
+        if(!this.running)
+            return;
+        if(this.startTime == 0)
+            this.startTime = Date.now();
+        var now = Date.now();
+        var time = Math.floor((now - this.startTime)/1000);
+        if(time > this.time)
+        {
+            this.time = time;
+            $("#time").html(
+                sprintf("%d:%02d", Math.floor(time/60), time%60)
+            );
+            $("#moves").html( this.moves.toString() );
+        }
+    }
+    countMove()
+    {
+        //
     }
     draw()
     {
@@ -544,6 +569,7 @@ function animate()
     cars.draw(dt);
     logic.draw();
     logic.check();
+    logic.timer(ms);
     window.requestAnimationFrame(animate);
 }
 
