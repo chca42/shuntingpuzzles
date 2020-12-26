@@ -10,8 +10,14 @@
     src: url('fonts/Montserrat-Regular.ttf') format('truetype');
 }
 
+#bd {
+    background-color: #100e23;
+}
+
 h1 {
     font-family: 'Orbitron';
+    font-size: 28pt;
+    color: #05b9ec;
 }
 
 p {
@@ -27,3 +33,11 @@ canvas {
     max-width: 4096px;
 }
 
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited,
+.btn-primary:focus {
+    background-color: #6800E7;
+    border-color: #6800E7;
+}
