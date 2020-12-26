@@ -322,8 +322,15 @@ class CarManager
     constructor()
     {
         this.colors = ["#008080", "#d95600", "#89a02c", "#ab37c8", "#2c5aa0"];
-        this.wagons = [new Car(1,1,2),new Car(2,1,7)];
-        this.engine = new Car(0,1,0);
+        this.wagons = [];
+        this.engine = null;
+    }
+    load(data)
+    {
+        var e = data.engine;
+        this.engine = new Car(e.id, e.x, e.y);
+        for(var w of data.cars)
+            this.wagons.push( new Car(w.id, w.x, w.y) );
     }
     draw(dt)
     {
@@ -405,6 +412,12 @@ class Cab {
 };
 var cab = new Cab();
 
+class GameLogic
+{
+
+};
+var logic = new GameLogic();
+
 var lastTime = Date.now();
 function animate()
 {
@@ -448,6 +461,7 @@ function onload()
         .then(function(data)
     {
         map.setTileMap(data);
+        cars.load(data);
         onload2();
     });
 
