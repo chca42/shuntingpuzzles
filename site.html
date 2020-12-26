@@ -22,14 +22,18 @@
 
             <div class="col-sm">
                 <button type="button" class="btn btn-primary"
-                    onmousedown="speed(true,true)"
-                    onmouseup="speed(false,true)">
-                throttle+
+                    onmousedown="cab.throttleUp()"
+                    onmouseup="cab.throttleIdle()">
+                accel(A)
                 </button>
                 <button type="button" class="btn btn-primary"
-                    onmousedown="speed(true,false)"
-                    onmouseup="speed(false,false)">
-                throttle-
+                    onmousedown="cab.throttleDn()"
+                    onmouseup="cab.throttleIdle()">
+                decel(D)
+                </button>
+                <button type="button" class="btn btn-primary"
+                    onmousedown="cab.reverse()">
+                reverse(R)
                 </button>
             </div>
     

@@ -14,6 +14,7 @@ const turnoutCurves = ["b","c","B","C"];
 const trackCurves = ["r","l","R","L"];
 const radius = 1.5*tileGrid;
 const L = Math.PI*radius*45/180;
+const eps = 1e-3;
 
 function replaceAt(s,i,c)
 {
@@ -339,10 +340,8 @@ var cars = {
     colors: ["#008080", "#d95600", "#89a02c", "#ab37c8", "#2c5aa0"],
     wagons: [new Car(1,1,2),new Car(2,1,7)],
     engine: new Car(0,1,0),
-    lastTime: Date.now(),
-    draw: function(ms)
+    draw: function(dt)
     {
-        dt = ms - this.lastTime;
         if(dt < 200)
         {
             this.engine.syncAttached();
@@ -366,8 +365,6 @@ var cars = {
                 }
             }
         }
-        this.lastTime = ms;
-
     },
     click: function(x,y)
     {
@@ -384,6 +381,40 @@ var cars = {
     }
 };
 
+var cab = {
+    fwd: true,
+    throttle: "none",
+    accel: 20,
+    speed: 0,
+    maxSpeed: 50,
+    throttleUp: function() { this.throttle = "up"; },
+    throttleDn: function() { this.throttle = "down"; },
+    throttleIdle: function() { this.throttle = "none"; },
+    reverse: function()
+    {
+        if(this.speed < eps)
+            this.fwd = !this.fwd;
+    },
+    animate: function(dt)
+    {
+        switch(this.throttle)
+        {
+            case "none":
+                break;
+            case "up":
+                this.speed = Math.min(
+                    this.speed + this.accel*dt/1000,
+                    this.maxSpeed);
+                break;
+            case "down":
+                this.speed = Math.max(
+                    this.speed - this.accel*dt/1000, 0);
+                break;
+        }
+        cars.engine.speed = this.fwd ? this.speed : -this.speed;
+    },
+};
+
 function speed(inc, fwd)
 {
     if(inc)
@@ -397,11 +428,20 @@ function speed(inc, fwd)
         cars.engine.speed = 0;
 }
 
+var lastTime = Date.now();
 function animate()
 {
     var ms = Date.now();
+    var dt = ms - lastTime;
+    lastTime = ms;
+    if(dt > 200)
+    {
+        window.requestAnimationFrame(animate);
+        return;
+    }
     map.draw();
-    cars.draw(ms);
+    cab.animate(dt);
+    cars.draw(dt);
     window.requestAnimationFrame(animate);
 }
 
@@ -434,5 +474,26 @@ function onload()
         map.click(x,y);
         cars.click(x,y);
     })
+
+    document.addEventListener("keydown", function(e)
+    {
+        switch(e.key)
+        {
+            case "a": cab.throttleUp(); break;
+            case "d": cab.throttleDn(); break;
+            case "r": cab.reverse(); break;
+        }
+    }, false);
+
+    document.addEventListener("keyup", function(e)
+    {
+        switch(e.key)
+        {
+            case "a":
+            case "d":
+                cab.throttleIdle(); break;
+        }
+    }, false);
+
 }
 
