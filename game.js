@@ -15,6 +15,7 @@ const trackCurves = ["r","l","R","L"];
 const radius = 1.5*tileGrid;
 const L = Math.PI*radius*45/180;
 const eps = 1e-3;
+const epsCurve = 2;
 
 function replaceAt(s,i,c)
 {
@@ -113,6 +114,7 @@ class TileMap {
     {
         var [x,y] = at;
         var track = this.getTileA(1,x,y);
+        logic.checkTrack(track);
         var turnout = this.getTileA(2,x,y);
         var tile = (turnout != " ") ? turnout : track;
 
@@ -207,6 +209,8 @@ class TileMap {
             if((fac>0 && rot>0) || (fac<1 && rot<0))
                 atnew[0] = at[0];
             rnew -= fac*1;
+
+            logic.checkRailTransistion(at,rel,atnew,rnew);
         }
         return [atnew, rnew];
     }
@@ -300,6 +304,8 @@ class Car {
     }
     uncouple(w)
     {
+        if(w.speed > eps)
+            return;
         this.syncAttached();
         var idx = this.attached.indexOf(w);
         var posUp = w.pos[1] < this.pos[1];
@@ -456,7 +462,7 @@ class GameLogic
             if(t != "t")
             {
                 alert("car placed on invalid tile! game over, try again.");
-                location.reload();
+                this.reset();
             }
         }
     }
@@ -468,9 +474,34 @@ class GameLogic
             if((o.tileAt[0] == tx) && (o.tileAt[1] == ty))
             {
                 alert("you may not throw this turnout! game over, try again.");
-                location.reload();
+                this.reset();
             }
         }
+    }
+    checkRailTransistion(at,r,atnew,rnew)
+    {
+        r = Math.round(r);
+        rnew = Math.round(rnew);
+        var posOld = map.getPos(at,r)[0];
+        var posNew = map.getPos(atnew,rnew)[0];
+        if(vdist(posOld, posNew) > epsCurve)
+        {
+            alert("you cannot drive here! game over, try again.");
+            this.reset();
+        }
+    }
+    checkTrack(t)
+    {
+        if(!t || t==" ")
+        {
+            alert("you cannot move cars to tiles without rails! game over, try again.");
+            this.reset();
+        }
+    }
+    reset()
+    {
+        location.reload();
+        throw new Error("game logic violation");
     }
 };
 var logic = new GameLogic();
