@@ -378,7 +378,7 @@ class CarManager
         for(var w of this.engine.attached)
         {
             var dist = vdist([x,y], w.pos);
-            if(dist < tileGrid)
+            if(dist < tileGrid/2)
             {
                 var uncoupled = this.engine.uncouple(w);
                 if(uncoupled)
