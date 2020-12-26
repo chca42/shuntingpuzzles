@@ -170,7 +170,7 @@ class TileMap {
 
         return [[x*tileGrid + lx, y*tileGrid + ly],angle];
     }
-    getMove(at, rel, dist)
+    getMove(at, rel, dist, sim=false)
     {
         var [x,y] = at;
         var track = this.getTileA(1,x,y);
@@ -210,7 +210,8 @@ class TileMap {
                 atnew[0] = at[0];
             rnew -= fac*1;
 
-            logic.checkRailTransistion(at,rel,atnew,rnew);
+            if(!sim)
+                logic.checkRailTransistion(at,rel,atnew,rnew);
         }
         return [atnew, rnew];
     }
@@ -366,8 +367,16 @@ class CarManager
                     if( (vlen(vdiff(trainCar.pos, otherCar.pos))
                         < tileGrid) )
                     {
-                        this.engine.attached.push(otherCar);
-                        this.wagons.splice(this.wagons.indexOf(otherCar),1);
+                        var nextTile = map.getMove(
+                            trainCar.tileAt, trainCar.tileRel,
+                            trainCar.speed < 0 ? -tileGrid:tileGrid,
+                            true)[0]
+                        if((nextTile[0] == otherCar.tileAt[0])
+                            && (nextTile[1] == otherCar.tileAt[1]))
+                        {
+                            this.engine.attached.push(otherCar);
+                            this.wagons.splice(this.wagons.indexOf(otherCar),1);
+                        }
                     }
                 }
             }
@@ -468,7 +477,7 @@ class GameLogic
     }
     countMove()
     {
-        //
+        this.moves += 1;
     }
     draw()
     {
