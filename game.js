@@ -301,7 +301,7 @@ class Car {
         var posUp = w.pos[1] < this.pos[1];
         var uncouple;
         if(posUp)
-            uncouple = this.attached.slice(0,idx);
+            uncouple = this.attached.slice(0,idx+1);
         else
             uncouple = this.attached.slice(idx);
         for(var o of uncouple)
@@ -426,7 +426,6 @@ class GameLogic
     }
     draw()
     {
-        //ctx.save();
         for(var [id,xy] of this.goal)
         {
             ctx.fillStyle = this.carcolors[id];
@@ -436,7 +435,24 @@ class GameLogic
                 tileGrid/10, 0, Math.PI*2, false);
             ctx.fill();
         }
-        //ctx.restore();
+    }
+    check()
+    {
+        var err = false;
+        for(var c of cars.wagons)
+        {
+            var dest = this.goal.get(c.tileId);
+            if((c.tileAt[0] != dest[0]) ||
+                (c.tileAt[1] != dest[1]))
+                err = true;
+            var [t,rot] = map.getTileA(0,c.tileAt[0],c.tileAt[1]);
+            if(t != "t")
+            {
+                err = true;
+                alert("car placed on invalid tile! game over, try again.");
+                location.reload();
+            }
+        }
     }
 };
 var logic = new GameLogic();
@@ -456,6 +472,7 @@ function animate()
     cab.animate(dt);
     cars.draw(dt);
     logic.draw();
+    logic.check();
     window.requestAnimationFrame(animate);
 }
 
