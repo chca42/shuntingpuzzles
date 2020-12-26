@@ -397,7 +397,7 @@ class Cab {
     {
         this.fwd = true;
         this.throttle = "none";
-        this.accel = 20;
+        this.accel = 25;
         this.speed = 0;
         this.maxSpeed = 50;
     }
@@ -589,9 +589,6 @@ function onload()
     {
         switch(e.key)
         {
-            case "a":
-            case "d":
-                cab.throttleIdle(); break;
         }
     }, false);
 
