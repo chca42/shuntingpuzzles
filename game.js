@@ -290,6 +290,12 @@ class Car {
         for(var o of this.attached)
             o.draw();
     }
+    moveD(dist)
+    {
+        [this.tileAt, this.tileRel] = map.getMove(this.tileAt, this.tileRel, dist);
+        for(var o of this.attached)
+            o.moveD(dist);
+    }
     move(dt)
     {
         var dist = this.speed*dt/1000;
@@ -306,10 +312,28 @@ class Car {
         // sort attached cars
         this.attached.sort((a,b) => a.pos[1] - b.pos[1]);
     }
+    uncouple(w)
+    {
+        this.syncAttached();
+        var idx = this.attached.indexOf(w);
+        var posUp = w.pos[1] < this.pos[1];
+        var uncouple;
+        if(posUp)
+            uncouple = this.attached.slice(0,idx);
+        else
+            uncouple = this.attached.slice(idx);
+        for(var o of uncouple)
+        {
+            this.attached.splice(this.attached.indexOf(o),1);
+            o.moveD( (posUp ? -1 : 1)*tileGrid/10 );
+        }
+        return uncouple;
+    }
 }
 
 function vdiff(v1,v2) { return [v1[0]-v2[0], v1[1]-v2[1]]; }
 function vlen(v) { return Math.sqrt(v[0]**2 + v[1]**2); }
+function vdist(v1,v2) { return vlen(vdiff(v1,v2)); }
 
 var cars = {
     colors: ["#008080", "#d95600", "#89a02c", "#ab37c8", "#2c5aa0"],
@@ -344,6 +368,19 @@ var cars = {
         }
         this.lastTime = ms;
 
+    },
+    click: function(x,y)
+    {
+        for(var w of this.engine.attached)
+        {
+            var dist = vdist([x,y], w.pos);
+            if(dist < tileGrid)
+            {
+                var uncoupled = this.engine.uncouple(w);
+                for(var o of uncoupled)
+                    this.wagons.push(o);
+            }
+        }
     }
 };
 
@@ -395,6 +432,7 @@ function onload()
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
         map.click(x,y);
+        cars.click(x,y);
     })
 }
 

@@ -1,4 +1,23 @@
 
+@font-face {
+    font-family: 'Orbitron';
+    src: url('fonts/Orbitron-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    font-weight: normal;
+    src: url('fonts/Montserrat-Regular.ttf') format('truetype');
+}
+
+h1 {
+    font-family: 'Orbitron';
+}
+
+p {
+    font-family: 'Montserrat', normal;
+}
+
 canvas {
     border:1px solid #d0d0d0;
     background-color: #808080;
@@ -7,3 +26,4 @@ canvas {
 .container {
     max-width: 4096px;
 }
+
