@@ -11,8 +11,10 @@
 
 <body onload="onload()" class="text-light" id="bd">
 
-    <div class="container mg-2">
+    <div class="container m-3">
+        <div class="row mb-3">
             <h1>The Timesaver Shunting Puzzle</h1>
+        </div>
         <div class="row">
 
             <div class="col-sm">
@@ -35,12 +37,29 @@
                     onmousedown="cab.reverse()">
                 reverse(R)
                 </button>
+
+                <p class="m-0 mt-3">
+                Rules:
+                <ul>
+                    <li>goal is to move all cars to the corresponding
+                    spots marked with colored dots</li>
+                    <li>cars couple automatically and uncouple when clicked</li>
+                    <li>cars may only be uncoupled on brown fields</li>
+                    <li>turnouts can be thrown by clicking on them</li>
+                    <li>turnouts must always be thrown correctly
+                    when passing from any direction</li>
+                    <li>turnouts may not be thrown when occupied</li>
+                    <li>cars may not be moved outside</li>
+                    <li>engine must stop when reversing direction</li>
+                    
+                </ul>
+                </p>
             </div>
     
         </div>
-        <div class="row">
+        <div class="row mt-3">
             <div class="col-sm">
-                <p>What is this? This game was invented
+                <p>This game was invented
                 by John Allen from Monterey, California and first
                 published in the November 1972 issue of <i>Model
                 Railroader</i>. You can find more information
