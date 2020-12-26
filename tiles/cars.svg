@@ -115,9 +115,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8284271"
-     inkscape:cx="177.43241"
-     inkscape:cy="198.88391"
+     inkscape:zoom="4"
+     inkscape:cx="76.230337"
+     inkscape:cy="171.12271"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -128,7 +128,11 @@
      inkscape:window-y="25"
      inkscape:window-maximized="1"
      inkscape:snap-global="true"
-     inkscape:snap-smooth-nodes="true">
+     inkscape:snap-smooth-nodes="true"
+     inkscape:snap-text-baseline="false"
+     inkscape:snap-object-midpoints="true"
+     inkscape:snap-bbox="true"
+     inkscape:snap-bbox-midpoints="true">
     <inkscape:grid
        type="xygrid"
        id="grid815"
@@ -344,5 +348,93 @@
          id="path1130"
          inkscape:connector-curvature="0" />
     </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#554d44;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
+       x="25.362793"
+       y="239.27637"
+       id="text56"><tspan
+         sodipodi:role="line"
+         id="tspan54"
+         x="25.362793"
+         y="239.27637"
+         style="font-size:4.23333311px;text-align:center;text-anchor:middle;stroke-width:0.26458332px;-inkscape-font-specification:'Montserrat Bold';font-family:Montserrat;font-weight:bold;font-style:normal;font-stretch:normal;font-variant:normal;fill:#554d44;fill-opacity:1">1</tspan></text>
+    <text
+       id="text60"
+       y="239.27637"
+       x="42.296127"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
+       xml:space="preserve"><tspan
+         style="font-size:4.23333311px;text-align:center;text-anchor:middle;stroke-width:0.26458332px;-inkscape-font-specification:'Montserrat Bold';font-family:Montserrat;font-weight:bold;font-style:normal;font-stretch:normal;font-variant:normal;fill:#ffffff"
+         y="239.27637"
+         x="42.296127"
+         id="tspan58"
+         sodipodi:role="line">2</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#554d44;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
+       x="59.283203"
+       y="239.27637"
+       id="text64"><tspan
+         sodipodi:role="line"
+         id="tspan62"
+         x="59.283203"
+         y="239.27637"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.23333311px;font-family:Montserrat;-inkscape-font-specification:'Montserrat Bold';text-align:center;text-anchor:middle;fill:#554d44;stroke-width:0.26458332px;fill-opacity:1">3</tspan></text>
+    <text
+       id="text68"
+       y="256.20764"
+       x="8.4935379"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#554d44;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.23333311px;font-family:Montserrat;-inkscape-font-specification:'Montserrat Bold';text-align:center;text-anchor:middle;fill:#554d44;fill-opacity:1;stroke-width:0.26458332px"
+         y="256.20764"
+         x="8.4935379"
+         id="tspan66"
+         sodipodi:role="line">4</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#554d44;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="25.402067"
+       y="256.20764"
+       id="text72"><tspan
+         sodipodi:role="line"
+         id="tspan70"
+         x="25.402067"
+         y="256.20764"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.23333311px;font-family:Montserrat;-inkscape-font-specification:'Montserrat Bold';text-align:center;text-anchor:middle;fill:#554d44;fill-opacity:1;stroke-width:0.26458332px">5</tspan></text>
+    <text
+       id="text76"
+       y="256.20764"
+       x="42.317829"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#554d44;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.23333311px;font-family:Montserrat;-inkscape-font-specification:'Montserrat Bold';text-align:center;text-anchor:middle;fill:#554d44;fill-opacity:1;stroke-width:0.26458332px"
+         y="256.20764"
+         x="42.317829"
+         id="tspan74"
+         sodipodi:role="line">6</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="59.249096"
+       y="256.20764"
+       id="text80"><tspan
+         sodipodi:role="line"
+         id="tspan78"
+         x="59.249096"
+         y="256.20764"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.23333311px;font-family:Montserrat;-inkscape-font-specification:'Montserrat Bold';text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke-width:0.26458332px">7</tspan></text>
+    <text
+       id="text84"
+       y="274.19724"
+       x="8.4490967"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.23333311px;font-family:Montserrat;-inkscape-font-specification:'Montserrat Bold';text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke-width:0.26458332px"
+         y="274.19724"
+         x="8.4490967"
+         id="tspan82"
+         sodipodi:role="line">8</tspan></text>
   </g>
 </svg>

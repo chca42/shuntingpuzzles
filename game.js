@@ -436,6 +436,8 @@ class GameLogic
     {
         this.goal = new Map();
         this.carcolors = [];
+        this.timer = 0;
+        this.running = true;
     }
     load(data)
     {
@@ -449,10 +451,15 @@ class GameLogic
         {
             ctx.fillStyle = this.carcolors[id];
             ctx.beginPath();
-            ctx.arc(xy[0]*tileGrid+7*tileGrid/8, 
-                xy[1]*tileGrid+tileGrid/2,
-                tileGrid/10, 0, Math.PI*2, false);
+            var x = xy[0]*tileGrid+7*tileGrid/8;
+            var y = xy[1]*tileGrid+tileGrid/2;
+            var r = tileGrid/10;
+            ctx.arc(x, y - r, r, 0, Math.PI*2, false);
             ctx.fill();
+            ctx.fillStyle = "#01022a";
+            ctx.textAlign = "center";
+            ctx.font = "16px Montserrat, bold";
+            ctx.fillText(id.toString(), x, y + 3*r);
         }
     }
     check()
@@ -473,6 +480,11 @@ class GameLogic
                 alert("car placed on invalid tile! game over, try again.");
                 this.reset();
             }
+        }
+        if(!err)
+        {
+            alert("congratulations, you're done!");
+            this.running = false;
         }
     }
     checkCarOnTurnout(tx,ty)

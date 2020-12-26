@@ -10,18 +10,21 @@
     src: url('fonts/Montserrat-Regular.ttf') format('truetype');
 }
 
+@font-face {
+    font-family: 'Montserrat';
+    font-weight: bold;
+    src: url('fonts/Montserrat-Bold.ttf') format('truetype');
+}
+
 #bd {
     background-color: #100e23;
+    font-family: 'Montserrat', normal;
 }
 
 h1 {
     font-family: 'Orbitron';
     font-size: 28pt;
     color: #05b9ec;
-}
-
-p {
-    font-family: 'Montserrat', normal;
 }
 
 canvas {
