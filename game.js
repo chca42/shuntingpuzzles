@@ -41,7 +41,7 @@ class Log {
 
 var maplog = new Log(1000);
 
-class Map {
+class TileMap {
     constructor()
     {
         this.layers = 0;
@@ -231,7 +231,7 @@ class Map {
         }
     }
 };
-var map = new Map();
+var map = new TileMap();
 
 var carlog = new Log(1000);
 class Car {
@@ -321,7 +321,6 @@ class CarManager
 {
     constructor()
     {
-        this.colors = ["#008080", "#d95600", "#89a02c", "#ab37c8", "#2c5aa0"];
         this.wagons = [];
         this.engine = null;
     }
@@ -414,7 +413,31 @@ var cab = new Cab();
 
 class GameLogic
 {
-
+    constructor()
+    {
+        this.goal = new Map();
+        this.carcolors = [];
+    }
+    load(data)
+    {
+        for(var g of data.goal)
+            this.goal.set(g.id, [g.x,g.y]);
+        this.carcolors = data.carcolors;
+    }
+    draw()
+    {
+        //ctx.save();
+        for(var [id,xy] of this.goal)
+        {
+            ctx.fillStyle = this.carcolors[id];
+            ctx.beginPath();
+            ctx.arc(xy[0]*tileGrid+7*tileGrid/8, 
+                xy[1]*tileGrid+tileGrid/2,
+                tileGrid/10, 0, Math.PI*2, false);
+            ctx.fill();
+        }
+        //ctx.restore();
+    }
 };
 var logic = new GameLogic();
 
@@ -432,6 +455,7 @@ function animate()
     map.draw();
     cab.animate(dt);
     cars.draw(dt);
+    logic.draw();
     window.requestAnimationFrame(animate);
 }
 
@@ -462,6 +486,7 @@ function onload()
     {
         map.setTileMap(data);
         cars.load(data);
+        logic.load(data);
         onload2();
     });
 
