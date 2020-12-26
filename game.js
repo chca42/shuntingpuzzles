@@ -259,12 +259,18 @@ class Car {
         // draw couplers between cars
         ctx.strokeStyle = "rgb(100,100,100)";
         ctx.lineWidth = 4;
+        var objAbove = this.attached.filter(o => o.pos[1]<this.pos[1]);
+        objAbove.reverse();
+        var objBelow = this.attached.filter(o => o.pos[1]>this.pos[1]);
         ctx.beginPath();
         ctx.moveTo(this.pos[0], this.pos[1])
-        for(var o of this.attached)
-        {
+        for(var o of objAbove)
             ctx.lineTo(o.pos[0], o.pos[1]);
-        }
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(this.pos[0], this.pos[1])
+        for(var o of objBelow)
+            ctx.lineTo(o.pos[0], o.pos[1]);
         ctx.stroke();
         // draw car
         [this.pos, this.angle] = map.getPos(this.tileAt, this.tileRel);
@@ -375,8 +381,11 @@ class CarManager
             if(dist < tileGrid)
             {
                 var uncoupled = this.engine.uncouple(w);
-                for(var o of uncoupled)
-                    this.wagons.push(o);
+                if(uncoupled)
+                {
+                    for(var o of uncoupled)
+                        this.wagons.push(o);
+                }
             }
         }
     }
