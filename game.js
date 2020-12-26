@@ -477,7 +477,8 @@ class GameLogic
     }
     checkCarOnTurnout(tx,ty)
     {
-        var obj = [cars.engine].concat(cars.wagons);
+        var obj = [cars.engine].concat(cars.wagons)
+            .concat(cars.engine.attached);
         for(var o of obj)
         {
             if((o.tileAt[0] == tx) && (o.tileAt[1] == ty))
