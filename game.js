@@ -348,6 +348,10 @@ class CarManager
         for(var w of data.cars)
             this.wagons.push( new Car(w.id, w.x, w.y) );
     }
+    getAllWagons() // parked or in train, but not engine
+    {
+        return this.engine.attached.concat(this.wagons);
+    }
     draw(dt)
     {
         if(dt < 200)
@@ -477,6 +481,8 @@ class GameLogic
     }
     countMove()
     {
+        if(!this.running)
+            return;
         this.moves += 1;
     }
     draw()
@@ -498,16 +504,24 @@ class GameLogic
     }
     check()
     {
+        if(!this.running)
+            return;
         var err = false;
-        for(var c of cars.wagons)
+        // check for victory condition
+        for(var c of cars.getAllWagons())
         {
-            // check for victory condition
             var dest = this.goal.get(c.tileId);
             if((c.tileAt[0] != dest[0]) ||
                 (c.tileAt[1] != dest[1]))
                 err = true;
 
-            // check for cars placed on invalid tiles
+        }
+        // victory only when all wagons parked
+        if(cars.engine.attached.length != 0)
+            err = true;
+        // check for cars placed on invalid tiles
+        for(var c of cars.wagons)
+        {
             var [t,rot] = map.getTileA(0,c.tileAt[0],c.tileAt[1]);
             if(t != "t")
             {
@@ -604,12 +618,16 @@ function onload()
     cartiles.onload = onload2;
     cartiles.src = "tiles/cars.png";
     // load #3
-    fetch("level.json").then(response => response.json())
+    var params = new URLSearchParams(location.search);
+    var level = params.get("level");
+    fetch("level_" + level + ".json")
+        .then(response => response.json())
         .then(function(data)
     {
         map.setTileMap(data);
         cars.load(data);
         logic.load(data);
+        $("#name").html( data.name );
         onload2();
     });
 

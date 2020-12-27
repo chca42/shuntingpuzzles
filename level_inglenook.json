@@ -1,0 +1,62 @@
+{
+    "name": "Inglenook",
+    "layers": 3,
+    "cols": 6,
+    "rows": 10,
+    "level": [
+        [
+        "ggtggg",
+        "ggtggg",
+        "ggtggg",
+        "ggtggg",
+        "gggggg",
+        "gggggg",
+        "gggtgg",
+        "gtttgg",
+        "gtttgg",
+        "gtttgg",
+        "gggtgg"],
+        [
+        "  s   ",
+        "  s   ",
+        "  s   ",
+        "  s   ",
+        "  W   ",
+        "  Vl  ",
+        " rss  ",
+        " sss  ",
+        " sss  ",
+        " sss  ",
+        "   s  "],
+        [
+        "      ",
+        "      ",
+        "      ",
+        "      ",
+        "  M   ",
+        "  M   ",
+        "      ",
+        "      ",
+        "      ",
+        "      ",
+        "      "]
+    ],
+    "engine": {"id": 0, "x": 2, "y": 0},
+    "cars": [
+        {"id": 1, "x": 1, "y": 8}
+    ],
+    "goal": [
+        {"id": 1, "x": 1, "y": 9}
+    ],
+    "carcolors": [
+        "#fd294f",
+        "#fd294f",
+        "#160afe",
+        "#fff900",
+        "#02fae0",
+        "#0bcb60",
+        "#e500fc",
+        "#751de7",
+        "#0e1c23"
+    ]
+}
