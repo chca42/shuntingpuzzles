@@ -510,11 +510,13 @@ class GameLogic
         // check for victory condition
         for(var c of cars.getAllWagons())
         {
-            var dest = this.goal.get(c.tileId);
-            if((c.tileAt[0] != dest[0]) ||
-                (c.tileAt[1] != dest[1]))
-                err = true;
-
+            if(this.goal.has(c.tileId))
+            {
+                var dest = this.goal.get(c.tileId);
+                if((c.tileAt[0] != dest[0]) ||
+                    (c.tileAt[1] != dest[1]))
+                    err = true;
+            }
         }
         // victory only when all wagons parked
         if(cars.engine.attached.length != 0)
@@ -628,6 +630,8 @@ function onload()
         cars.load(data);
         logic.load(data);
         $("#name").html( data.name );
+        canvas.height = data.rows * tileGrid;
+        canvas.width = data.cols * tileGrid;
         onload2();
     });
 
