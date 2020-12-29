@@ -630,6 +630,8 @@ function onload()
         cars.load(data);
         logic.load(data);
         $("#name").html( data.name );
+        $("#badge").html( '<a href="' + data.badge 
+            + '"><b>Get Badge here ...</b></a>' );
         canvas.height = data.rows * tileGrid;
         canvas.width = data.cols * tileGrid;
         onload2();
