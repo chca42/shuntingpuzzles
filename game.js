@@ -409,15 +409,12 @@ var cars = new CarManager();
 class Cab {
     constructor()
     {
-        this.fwd = true;
         this.throttle = "none";
-        this.accel = 25;
         this.speed = 0;
-        this.maxSpeed = 50;
     }
     throttleUp() { this.throttle = "up"; }
     throttleDn() { this.throttle = "down"; }
-    animate(dt)
+    animate()
     {
         switch(this.throttle)
         {
@@ -425,16 +422,14 @@ class Cab {
                 this.speed = 0;
                 break;
             case "up":
-                this.speed = 200;
-                this.fwd = false;
+                this.speed = -200;
                 break;
             case "down":
                 this.speed = 200;
-                this.fwd = true;
                 break;
         }
         this.throttle = "none";
-        cars.engine.speed = this.fwd ? this.speed : -this.speed;
+        cars.engine.speed = this.speed;
     }
 };
 var cab = new Cab();
@@ -585,7 +580,7 @@ function animate()
         return;
     }
     map.draw();
-    cab.animate(dt);
+    cab.animate();
     cars.draw(dt);
     logic.draw();
     logic.check();
