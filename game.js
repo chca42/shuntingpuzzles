@@ -417,28 +417,23 @@ class Cab {
     }
     throttleUp() { this.throttle = "up"; }
     throttleDn() { this.throttle = "down"; }
-    throttleIdle() { this.throttle = "none"; }
-    reverse()
-    {
-        if(this.speed < eps)
-            this.fwd = !this.fwd;
-    }
     animate(dt)
     {
         switch(this.throttle)
         {
             case "none":
+                this.speed = 0;
                 break;
             case "up":
-                this.speed = Math.min(
-                    this.speed + this.accel*dt/1000,
-                    this.maxSpeed);
+                this.speed = 200;
+                this.fwd = false;
                 break;
             case "down":
-                this.speed = Math.max(
-                    this.speed - this.accel*dt/1000, 0);
+                this.speed = 200;
+                this.fwd = true;
                 break;
         }
+        this.throttle = "none";
         cars.engine.speed = this.fwd ? this.speed : -this.speed;
     }
 };
@@ -651,9 +646,8 @@ function onload()
     {
         switch(e.key)
         {
-            case "a": cab.throttleUp(); break;
-            case "d": cab.throttleDn(); break;
-            case "r": cab.reverse(); break;
+            case "w": cab.throttleUp(); break;
+            case "s": cab.throttleDn(); break;
         }
     }, false);
 
