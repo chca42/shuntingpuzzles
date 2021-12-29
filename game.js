@@ -414,6 +414,7 @@ class Cab {
     }
     throttleUp() { this.throttle = "up"; }
     throttleDn() { this.throttle = "down"; }
+    throttleIdle() { this.throttle = "none"; }
     animate()
     {
         switch(this.throttle)
@@ -422,13 +423,12 @@ class Cab {
                 this.speed = 0;
                 break;
             case "up":
-                this.speed = -200;
+                this.speed = -100;
                 break;
             case "down":
-                this.speed = 200;
+                this.speed = 100;
                 break;
         }
-        this.throttle = "none";
         cars.engine.speed = this.speed;
     }
 };
@@ -650,6 +650,9 @@ function onload()
     {
         switch(e.key)
         {
+			case "w":
+			case "s":
+				cab.throttleIdle(); break;
         }
     }, false);
 
