@@ -409,37 +409,27 @@ var cars = new CarManager();
 class Cab {
     constructor()
     {
-        this.fwd = true;
         this.throttle = "none";
-        this.accel = 25;
         this.speed = 0;
-        this.maxSpeed = 50;
     }
     throttleUp() { this.throttle = "up"; }
     throttleDn() { this.throttle = "down"; }
-    throttleIdle() { this.throttle = "none"; }
-    reverse()
-    {
-        if(this.speed < eps)
-            this.fwd = !this.fwd;
-    }
-    animate(dt)
+    animate()
     {
         switch(this.throttle)
         {
             case "none":
+                this.speed = 0;
                 break;
             case "up":
-                this.speed = Math.min(
-                    this.speed + this.accel*dt/1000,
-                    this.maxSpeed);
+                this.speed = -200;
                 break;
             case "down":
-                this.speed = Math.max(
-                    this.speed - this.accel*dt/1000, 0);
+                this.speed = 200;
                 break;
         }
-        cars.engine.speed = this.fwd ? this.speed : -this.speed;
+        this.throttle = "none";
+        cars.engine.speed = this.speed;
     }
 };
 var cab = new Cab();
@@ -590,7 +580,7 @@ function animate()
         return;
     }
     map.draw();
-    cab.animate(dt);
+    cab.animate();
     cars.draw(dt);
     logic.draw();
     logic.check();
@@ -651,9 +641,8 @@ function onload()
     {
         switch(e.key)
         {
-            case "a": cab.throttleUp(); break;
-            case "d": cab.throttleDn(); break;
-            case "r": cab.reverse(); break;
+            case "w": cab.throttleUp(); break;
+            case "s": cab.throttleDn(); break;
         }
     }, false);
 
