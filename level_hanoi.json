@@ -1,0 +1,71 @@
+{
+    "name": "Inglenook",
+    "badge": "https://rc3.world/rc3/me/redeem_badge/RDxxoAogqhNtGchZ5n4JeTsA5Q2nhV9TzgfmaVOnjLJzNG4d6f",
+    "layers": 3,
+    "cols": 6,
+    "rows": 10,
+    "level": [
+        [
+        "gggggg",
+        "gggggg",
+        "gggggg",
+        "gggggg",
+        "gggggg",
+        "gtttgg",
+        "gtttgg",
+        "gtttgg",
+        "gtttgg",
+        "gtttgg"
+    ],
+        [
+        "  s   ",
+        "  s   ",
+        "  W   ",
+        "  Vl  ",
+        " rss  ",
+        " sss  ",
+        " sss  ",
+        " sss  ",
+        " sss  ",
+        " sss  "
+    ],
+        [
+        "      ",
+        "      ",
+        "  N   ",
+        "  M   ",
+        "      ",
+        "      ",
+        "      ",
+        "      ",
+        "      ",
+        "      "]
+    ],
+    "engine": {"id": 0, "x": 2, "y": 0},
+    "cars": [
+        
+        {"id": 1, "x": 1, "y": 5},
+        {"id": 2, "x": 1, "y": 6},
+        {"id": 3, "x": 1, "y": 7},
+        {"id": 4, "x": 1, "y": 8},
+        {"id": 5, "x": 1, "y": 9}
+    ],
+    "goal": [
+        {"id": 1, "x": 3, "y": 5},
+        {"id": 2, "x": 3, "y": 6},
+        {"id": 3, "x": 3, "y": 7},
+        {"id": 4, "x": 3, "y": 8},
+        {"id": 5, "x": 3, "y": 9}
+    ],
+    "carcolors": [
+        "#fd294f",
+        "#fd294f",
+        "#160afe",
+        "#fff900",
+        "#02fae0",
+        "#0bcb60",
+        "#e500fc",
+        "#751de7",
+        "#0e1c23"
+    ]
+}
