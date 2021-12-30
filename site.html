@@ -25,11 +25,11 @@
 
             <div class="col-sm">
                 <button type="button" class="btn btn-primary"
-                    onmousedown="cab.throttleUp()">
+                    onmousedown="cab.throttleUp()" onmouseup="cab.throttleIdle()">
                 train up (w)
                 </button>
                 <button type="button" class="btn btn-primary"
-                    onmousedown="cab.throttleDn()">
+                    onmousedown="cab.throttleDn()" onmouseup="cab.throttleIdle()">
                 train down (s)
                 </button>
 

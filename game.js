@@ -114,7 +114,8 @@ class TileMap {
     {
         var [x,y] = at;
         var track = this.getTileA(1,x,y);
-        logic.checkTrack(track);
+        if(!logic.checkTrack(track))
+            return [[0,0],0];
         var turnout = this.getTileA(2,x,y);
         var tile = (turnout != " ") ? turnout : track;
 
@@ -237,7 +238,10 @@ class TileMap {
             case 'C': this.setTileA(2,tx,ty,'N'); sw=true; break;
         }
         if(sw)
-            logic.checkCarOnTurnout(tx,ty);
+        {
+            if(logic.checkCarOnTurnout(tx,ty))
+                this.setTileA(2,tx,ty,t);
+        }
     }
 };
 var map = new TileMap();
@@ -248,7 +252,9 @@ class Car {
     {
         this.tileId = tileId;
         this.tileAt = [initX,initY];
+        this.tileAtLast = [initX,initY];
         this.tileRel = 0.5;
+        this.tileRelLast = 0.5;
         this.pos = [0,0];
         this.angle = 0;
         this.speed = 0;
@@ -289,6 +295,7 @@ class Car {
     }
     moveD(dist)
     {
+		[this.tileAtLast, this.tileRelLast] = [this.tileAt, this.tileRel];
         [this.tileAt, this.tileRel] = map.getMove(this.tileAt, this.tileRel, dist);
         for(var o of this.attached)
             o.moveD(dist);
@@ -296,10 +303,16 @@ class Car {
     move(dt)
     {
         var dist = this.speed*dt/1000;
+        [this.tileAtLast, this.tileRelLast] = [this.tileAt, this.tileRel];
         [this.tileAt, this.tileRel] = map.getMove(this.tileAt, this.tileRel, dist);
         for(var o of this.attached)
             o.move(dt);
         //carlog.log([this.tileAt[0], this.tileAt[1], this.tileRel]);
+    }
+    revertMove()
+    {
+        [this.tileAt, this.tileRel] = [this.tileAtLast, this.tileRelLast];
+        this.speed = 0;
     }
     syncAttached()
     {
@@ -351,6 +364,12 @@ class CarManager
     getAllWagons() // parked or in train, but not engine
     {
         return this.engine.attached.concat(this.wagons);
+    }
+    revert()
+    {
+        this.engine.revertMove();
+        for(var w of this.getAllWagons())
+            w.revertMove();
     }
     draw(dt)
     {
@@ -431,6 +450,11 @@ class Cab {
         }
         cars.engine.speed = this.speed;
     }
+    stop()
+    {
+        this.throttle = "none";
+        this.animate();
+    }
 };
 var cab = new Cab();
 
@@ -445,6 +469,8 @@ class GameLogic
         this.startTime = 0;
         this.running = true;
         this.moves = 0;
+
+        this.moveError = false;
     }
     load(data)
     {
@@ -517,14 +543,27 @@ class GameLogic
             var [t,rot] = map.getTileA(0,c.tileAt[0],c.tileAt[1]);
             if(t != "t")
             {
-                alert("car placed on invalid tile! game over, try again.");
-                this.reset();
+                this.moveError = true;
+                err = true;
             }
         }
         if(!err)
         {
             alert("congratulations, you're done!");
             this.running = false;
+        }
+    }
+    cleanup()
+    {
+        if(this.moveError)
+        {
+            alert("invalid operation, retry.");
+            cab.stop();
+            cars.revert();
+            map.draw();
+            cars.draw(0);
+            logic.draw();
+            this.moveError = false;
         }
     }
     checkCarOnTurnout(tx,ty)
@@ -535,10 +574,11 @@ class GameLogic
         {
             if((o.tileAt[0] == tx) && (o.tileAt[1] == ty))
             {
-                alert("you may not throw this turnout! game over, try again.");
-                this.reset();
+                this.moveError = true;
+                return true;
             }
         }
+        return false;
     }
     checkRailTransistion(at,r,atnew,rnew)
     {
@@ -547,23 +587,16 @@ class GameLogic
         var posOld = map.getPos(at,r)[0];
         var posNew = map.getPos(atnew,rnew)[0];
         if(vdist(posOld, posNew) > epsCurve)
-        {
-            alert("you cannot drive here! game over, try again.");
-            this.reset();
-        }
+            this.moveError = true;
     }
     checkTrack(t)
     {
         if(!t || t==" ")
         {
-            alert("you cannot move cars to tiles without rails! game over, try again.");
-            this.reset();
+            this.moveError = true;
+            return false;
         }
-    }
-    reset()
-    {
-        location.reload();
-        throw new Error("game logic violation");
+        return true;
     }
 };
 var logic = new GameLogic();
@@ -584,6 +617,7 @@ function animate()
     cars.draw(dt);
     logic.draw();
     logic.check();
+    logic.cleanup();
     logic.timer(ms);
     window.requestAnimationFrame(animate);
 }
