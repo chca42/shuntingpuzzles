@@ -1,0 +1,77 @@
+{
+    "name": "Timelooser",
+    "layers": 3,
+    "cols": 8,
+    "rows": 11,
+    "level": [
+        [
+            "gtgtgtgg",
+            "gtgtgtgg",
+            "gtgtgggg",
+            "gggggggg",
+            "gggggggg",
+            "gtgggtgg",
+            "gtgggtgg",
+            "gggggggg",
+            "gggggggg",
+            "gggtgttg",
+            "gggtgttg"],
+        [
+        " s s s  ",
+        " s s s  ",
+        " s s s  ",
+        " W s W  ",
+        " sls Vl ",
+        " ssVrss ",
+        " svsRss ",
+        " sRv Ws ",
+        " v s sw ",
+        " s s ss ",
+        " s s ss "],
+        [
+        "        ",
+        "        ",
+        "        ",
+        " N   N  ",
+        "     M  ",
+        "   M    ",
+        "  m     ",
+        "   m N  ",
+        " m    n ",
+        "        ",
+        "        "]
+    ],
+
+    "engine": {"id": 0, "x": 5, "y": 1},
+    "cars": [
+        {"id": 1, "x": 1, "y": 0},
+        {"id": 2, "x": 1, "y": 1},
+        {"id": 3, "x": 1, "y": 6},
+        {"id": 4, "x": 3, "y": 0},
+        {"id": 5, "x": 3, "y": 1},
+        {"id": 6, "x": 5, "y": 6},
+        {"id": 7, "x": 6, "y": 9},
+        {"id": 8, "x": 6, "y": 10}
+    ],
+    "goal": [
+        {"id": 1, "x": 5, "y": 1},
+        {"id": 2, "x": 5, "y": 0},
+        {"id": 3, "x": 6, "y": 10},
+        {"id": 4, "x": 3, "y": 10},
+        {"id": 5, "x": 3, "y": 9},
+        {"id": 6, "x": 3, "y": 0},
+        {"id": 7, "x": 1, "y": 1},
+        {"id": 8, "x": 1, "y": 0}
+    ],
+    "carcolors": [
+        "#fd294f",
+        "#fd294f",
+        "#160afe",
+        "#fff900",
+        "#02fae0",
+        "#0bcb60",
+        "#e500fc",
+        "#751de7",
+        "#0e1c23"
+    ]
+}
