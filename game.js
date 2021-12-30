@@ -469,6 +469,7 @@ class GameLogic
         this.startTime = 0;
         this.running = true;
         this.moves = 0;
+        this.badge = "";
 
         this.moveError = false;
     }
@@ -477,6 +478,8 @@ class GameLogic
         for(var g of data.goal)
             this.goal.set(g.id, [g.x,g.y]);
         this.carcolors = data.carcolors;
+        if("badge" in data)
+            this.badge = data.badge;
     }
     timer()
     {
@@ -549,7 +552,10 @@ class GameLogic
         }
         if(!err)
         {
-            alert("congratulations, you're done!");
+            var b = "";
+            if(this.badge)
+                b += "Your badge: " + this.badge;
+            alert("congratulations, you're done! " + b);
             this.running = false;
         }
     }
@@ -654,8 +660,6 @@ function onload()
         cars.load(data);
         logic.load(data);
         $("#name").html( data.name );
-        $("#badge").html( '<a href="' + data.badge 
-            + '"><b>Get Badge here ...</b></a>' );
         canvas.height = data.rows * tileGrid;
         canvas.width = data.cols * tileGrid;
         onload2();
