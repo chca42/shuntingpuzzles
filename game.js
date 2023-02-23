@@ -682,6 +682,7 @@ function onload()
     });
 
     // Keyboard and Mouse I/O
+    canvas.addEventListener("mouseup", cab.throttleIdle());
     canvas.addEventListener("mousedown", function(e)
     {
         const rect = canvas.getBoundingClientRect();
